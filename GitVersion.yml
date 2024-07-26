@@ -11,6 +11,7 @@ branches:
   main:
     regex: ^main$
     mode: ContinuousDelivery
+    tag: ''
     increment: Patch
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
