@@ -23,7 +23,17 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-      - name: Create and push tag
+      - name: Delete existing tag if it exists
+        run: |
+          if git rev-parse "v1.0.0" >/dev/null 2>&1; then
+            echo "Tag v1.0.0 already exists. Deleting it."
+            git tag -d "v1.0.0"
+            git push origin --delete "v1.0.0"
+          else
+            echo "Tag v1.0.0 does not exist. No action needed."
+          fi
+
+      - name: Create and push new tag
         run: |
           git tag -a "v1.0.0" -m "Release 1.0.0"
           git push origin "v1.0.0"
