@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - hotfix/**
+    tags:
+      - 'v*.*.*'
   pull_request:
     branches:
       - main
@@ -15,12 +17,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '5.x'
+          dotnet-version: '6.x' # Update to a supported version
 
       - name: Install GitVersion
         run: dotnet tool install --global GitVersion.Tool
