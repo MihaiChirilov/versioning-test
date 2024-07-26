@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - hotfix/**
-  status:
-    - 'v*.*.*'
+    tags:
+      - 'v*.*.*'
   pull_request:
     branches:
       - main
