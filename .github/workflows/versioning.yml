@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - hotfix/**
-    tags:
-      - 'v*.*.*'
+  status:
+    - 'v*.*.*'
   pull_request:
     branches:
       - main
@@ -26,28 +26,18 @@ jobs:
         with:
           dotnet-version: '6.x'
 
-      - name: Install GitVersion
+      - name: Set Version
+        id: set-version
         run: |
-          dotnet tool install --global GitVersion.Tool
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Verify GitVersion Installation
-        run: |
-          dotnet-gitversion --version || echo "Failed to execute dotnet-gitversion --version"
-
-      - name: Determine Version
-        id: gitversion
-        run: |
-          dotnet-gitversion /output json /showvariable FullSemVer
-        continue-on-error: true
+          # You can set a static version or derive it dynamically
+          echo "VERSION=1.0.0" >> $GITHUB_ENV
 
       - name: Create GitHub Release
-        if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/') }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.gitversion.outputs.FullSemVer }}
-          release_name: Release ${{ steps.gitversion.outputs.FullSemVer }}
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
