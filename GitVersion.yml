@@ -11,7 +11,7 @@ branches:
   main:
     regex: ^main$
     mode: ContinuousDelivery
-    tag: 'v1.0.1'
+    tag: ''
     increment: Patch
   pull-request:
     regex: ^(pull|pull\-requests|pr)[/-]
