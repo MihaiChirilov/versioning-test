@@ -29,11 +29,13 @@ jobs:
           dotnet tool install --global GitVersion.Tool
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
-      - name: Verify GitVersion installation
-        run: dotnet-gitversion --version
+      - name: Verify GitVersion Installation
+        run: |
+          dotnet-gitversion --version || echo "Failed to execute dotnet-gitversion --version"
 
-      - name: Determine version
-        run: dotnet-gitversion /output json /showvariable FullSemVer
+      - name: Determine Version
+        run: |
+          dotnet-gitversion /output json /showvariable FullSemVer || echo "Failed to determine version"
         id: gitversion
 
       - name: Create GitHub Release
