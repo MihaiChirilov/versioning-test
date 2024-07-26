@@ -30,10 +30,10 @@ jobs:
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Verify GitVersion installation
-        run: gitversion --version
+        run: dotnet-gitversion --version
 
       - name: Determine version
-        run: gitversion /output json /showvariable FullSemVer
+        run: dotnet-gitversion /output json /showvariable FullSemVer
         id: gitversion
 
       - name: Create GitHub Release
