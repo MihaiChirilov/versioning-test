@@ -26,10 +26,14 @@ jobs:
       - name: Install GitVersion
         run: dotnet tool install --global GitVersion.Tool
 
+      - name: Verify GitVersion installation
+        run: dotnet-gitversion
+
       - name: Generate version number
-        id: version
         run: |
-          VERSION=$(dotnet-gitversion /showvariable SemVer)
+          dotnet-gitversion > version_output.txt 2>&1
+          cat version_output.txt
+          VERSION=$(grep "SemVer" version_output.txt | cut -d ':' -f2 | xargs)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Set up Git
