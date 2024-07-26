@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - hotfix/**
-    tags:
-      - 'v*.*.*'
+  tags:
+    - 'v*.*.*'
   pull_request:
     branches:
       - main
@@ -30,10 +30,6 @@ jobs:
         run: |
           dotnet tool install --global GitVersion.Tool
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Verify GitVersion Installation
-        run: |
-          dotnet-gitversion --version || echo "Failed to execute dotnet-gitversion --version"
 
       - name: Determine Version
         id: gitversion
