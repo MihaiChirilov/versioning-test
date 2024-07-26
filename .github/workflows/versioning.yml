@@ -15,20 +15,12 @@ jobs:
   versioning:
     runs-on: ubuntu-latest
 
+    container:
+      image: gitversion/gitversion:latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '6.x' # Ensure this matches your .NET version
-
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
-
-      - name: Set up GitVersion path
-        run: echo "${{ github.actor }}/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Determine version
         run: gitversion /output json /showvariable FullSemVer
