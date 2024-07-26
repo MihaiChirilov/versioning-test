@@ -9,15 +9,14 @@ jobs:
   tag-and-push:
     runs-on: ubuntu-latest
 
-    env:
-      ACTIONS_RUNNER_DEBUG: true
-      ACTIONS_STEP_DEBUG: true
+    permissions:
+      contents: write  # This permission is needed to push tags
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Ensure full history is fetched for tagging
 
       - name: Set up Git
         run: |
@@ -29,4 +28,4 @@ jobs:
           git tag -a "v1.0.0" -m "Release 1.0.0"
           git push origin "v1.0.0"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Ensure this token has write permissions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
