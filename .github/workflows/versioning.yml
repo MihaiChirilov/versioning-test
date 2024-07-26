@@ -18,6 +18,20 @@ jobs:
         with:
           fetch-depth: 0  # Ensure full history is fetched for tagging
 
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.x'  # Update this to your .NET version if needed
+
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
+      - name: Generate version number
+        id: version
+        run: |
+          VERSION=$(dotnet-gitversion /showvariable SemVer)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Set up Git
         run: |
           git config user.name "GitHub Actions"
@@ -25,7 +39,12 @@ jobs:
 
       - name: Create and push tag
         run: |
-          git tag -a "v1.0.0" -m "Release 1.0.0"
-          git push origin "v1.0.0"
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists. Skipping tag creation."
+          else
+            git tag -a "$VERSION" -m "Release $VERSION"
+            git push origin "$VERSION"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ env.VERSION }}
