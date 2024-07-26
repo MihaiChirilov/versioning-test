@@ -1,13 +1,7 @@
-name: Tag and Push
+name: Create and Push Tag
 
 on:
   push:
-    branches:
-      - main
-      - hotfix/**
-    tags:
-      - 'v*.*.*'
-  pull_request:
     branches:
       - main
 
@@ -15,22 +9,24 @@ jobs:
   tag-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '6.x'
-
-      - name: Create Tag
+      - name: Set up Git
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+      - name: Create and push tag
+        run: |
           git tag -a "v1.0.0" -m "Release 1.0.0"
           git push origin "v1.0.0"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Ensure this token has write permissions
