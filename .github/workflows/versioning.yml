@@ -18,11 +18,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.x' # Ensure this matches your .NET version
+          dotnet-version: '6.x'
 
       - name: Install GitVersion
         run: |
@@ -34,9 +36,10 @@ jobs:
           dotnet-gitversion --version || echo "Failed to execute dotnet-gitversion --version"
 
       - name: Determine Version
-        run: |
-          dotnet-gitversion /output json /showvariable FullSemVer || echo "Failed to determine version"
         id: gitversion
+        run: |
+          dotnet-gitversion /output json /showvariable FullSemVer
+        continue-on-error: true
 
       - name: Create GitHub Release
         if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/') }}
