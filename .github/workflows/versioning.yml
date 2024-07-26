@@ -29,15 +29,14 @@ jobs:
       - name: Set Version
         id: set-version
         run: |
-          # You can set a static version or derive it dynamically
           echo "VERSION=1.0.0" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.VERSION }}
           release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
